@@ -15,6 +15,7 @@ from uni_form.helpers import FormHelper, Layout, Fieldset
 from django.core.paginator import Paginator
 from django_digest import HttpDigestAuthenticator
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 # CSV Export
 @require_GET
@@ -214,17 +215,17 @@ def new_xform(req):
     else:
         form = XFormForm(excludes=('active',))
 
-    breadcrumbs = (('XForms', '/xforms/'), ('New XForm', ''))
+    breadcrumbs = (('Indicators', '/indicators/'), ('New Report', ''))
 
     return render_to_response(
         "xforms/form_create.html", { 'form': form, 'breadcrumbs': breadcrumbs },
         context_instance=RequestContext(req))
 
-
+@login_required
 def view_form(req, form_id):
     xform = XForm.on_site.get(pk=form_id)
     fields = XFormField.objects.order_by('order').filter(xform=xform)
-    breadcrumbs = (('XForms', '/xforms/'), ('Edit Form', ''))
+    breadcrumbs = (('Indicators', '/indicators/'), ('Edit Report', ''))
     return render_to_response("xforms/form_view.html",
         { 'xform': xform, 'fields': fields, 'field_count' : len(fields), 'breadcrumbs' : breadcrumbs },
         context_instance=RequestContext(req))
@@ -240,7 +241,7 @@ def edit_form(req, form_id):
 
     fields = XFormField.objects.order_by('order').filter(xform=xform)
 
-    breadcrumbs = (('XForms', '/xforms/'), ('Edit Form', ''))
+    breadcrumbs = (('Indicators', '/indicators/'), ('Edit Report', ''))
 
     if req.method == 'POST':
         form = XFormForm(req.POST, instance=xform)
@@ -328,7 +329,7 @@ def view_submissions(req, form_id):
     submissions = xform.submissions.all().order_by('-pk')
     fields = xform.fields.all().order_by('pk')
 
-    breadcrumbs = (('XForms', '/xforms/'), ('Submissions', ''))
+    breadcrumbs = (('Indicators', '/indicators/'), ('Submissions', ''))
 
     current_page = 1
     if 'page' in req.REQUEST:
@@ -423,7 +424,7 @@ def edit_submission(req, submission_id):
 
         form = form_class(initial=form_vals)
 
-    breadcrumbs = (('XForms', '/xforms/'), ('Submissions', '/xforms/%d/submissions/' % xform.pk), ('Edit Submission', ''))
+    breadcrumbs = (('Indicators', '/indicators/'), ('Submissions', '/xforms/%d/submissions/' % xform.pk), ('Edit Submission', ''))
 
     return render_to_response("xforms/submission_edit.html",
         { 'xform': xform, 'submission': submission,

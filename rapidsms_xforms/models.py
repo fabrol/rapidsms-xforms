@@ -42,13 +42,13 @@ class XForm(models.Model):
     )
 
     name = models.CharField(max_length=32,
-                            help_text="Human readable name.")
+                            help_text="The name of the report (e.g. 'Weekly Community Health Report'), for Excel reporting.")
     keyword = EavSlugField(max_length=32,
-                           help_text="The SMS keyword for this form, must be a slug.")
+                           help_text="The SMS keyword for this form (i.e., 'EPI').  This is the first word in an SMS message for this report.")
     description = models.TextField(max_length=255,
                                help_text="The purpose of this form.")
     response = models.CharField(max_length=255,
-                                help_text="The response sent when this form is successfully submitted.")
+                                help_text="The response SMS message sent when this form is successfully submitted.")
     active = models.BooleanField(default=True,
                                  help_text="Inactive forms will not accept new submissions.")
 
