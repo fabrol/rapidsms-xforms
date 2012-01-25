@@ -70,7 +70,7 @@ class XForm(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
-    site = models.ForeignKey(Site)
+    site = models.ForeignKey(Site, default=Site.objects.get_current().pk)
     objects = models.Manager()
     on_site = CurrentSiteManager()
 
