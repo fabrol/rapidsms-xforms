@@ -70,7 +70,7 @@ class XForm(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
-    site = models.ForeignKey(Site, default=Site.objects.get_current().pk)
+    site = models.ForeignKey(Site, default= settings.SITE_ID)#Site.objects.get_current().pk)
     objects = models.Manager()
     on_site = CurrentSiteManager()
 
@@ -612,8 +612,9 @@ class XForm(models.Model):
         # parse our submission
         sub_dict = self.parse_sms_submission(message_obj)
 
+#HERERERERERERER
         # create our new submission, we'll add field values as we parse them
-        submission = XFormSubmission(xform=self, type='sms', message=db_message, raw=message, connection=connection)
+        submission = XFormSubmission(xform=self, type='sms', message=db_message, raw=message, connection=connection, )
         submission.save()
 
         # build our template response
